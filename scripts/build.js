@@ -33,6 +33,18 @@ const PATCHES = {
 };
 const ZIPPED = ['chrome', 'edge', 'firefox'];
 
+// Keep dist/ tidy: zips from other versions move to dist/archive/.
+function archiveOldZips(version) {
+  if (!fs.existsSync(DIST)) return;
+  const archive = path.join(DIST, 'archive');
+  for (const f of fs.readdirSync(DIST)) {
+    if (/^clean-links-.*\.zip$/.test(f) && !f.endsWith(`-${version}.zip`)) {
+      fs.mkdirSync(archive, { recursive: true });
+      fs.renameSync(path.join(DIST, f), path.join(archive, f));
+    }
+  }
+}
+
 function build(target) {
   const out = path.join(DIST, target);
   fs.rmSync(out, { recursive: true, force: true });
@@ -52,6 +64,7 @@ if (require.main === module) {
   execFileSync(process.execPath, [path.join(__dirname, 'build-rules.js')], { stdio: 'inherit' });
   const wanted = process.argv.slice(2);
   const targets = wanted.length ? wanted : Object.keys(PATCHES);
+  archiveOldZips(JSON.parse(fs.readFileSync(path.join(SRC, 'manifest.json'), 'utf8')).version);
   for (const t of targets) {
     if (!PATCHES[t]) throw new Error(`Unknown target: ${t}`);
     console.log('built', path.relative(ROOT, build(t)));
