@@ -1,0 +1,428 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "utm_source",
+              "utm_medium",
+              "utm_campaign",
+              "utm_term",
+              "utm_content",
+              "utm_id",
+              "utm_name",
+              "utm_brand",
+              "utm_social",
+              "utm_social-type",
+              "utm_creative_format",
+              "utm_marketing_tactic",
+              "fbclid",
+              "gclid",
+              "gclsrc",
+              "dclid",
+              "gbraid",
+              "wbraid",
+              "msclkid",
+              "yclid",
+              "twclid",
+              "mc_cid",
+              "mc_eid",
+              "igshid",
+              "_hsenc",
+              "_hsmi",
+              "mkt_tok",
+              "oly_enc_id",
+              "oly_anon_id",
+              "vero_id",
+              "ref_src",
+              "ref_url"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "regexFilter": "[?&](?:utm_source|utm_medium|utm_campaign|utm_term|utm_content|utm_id|utm_name|utm_brand|utm_social|utm_social-type|utm_creative_format|utm_marketing_tactic|fbclid|gclid|gclsrc|dclid|gbraid|wbraid|msclkid|yclid|twclid|mc_cid|mc_eid|igshid|_hsenc|_hsmi|mkt_tok|oly_enc_id|oly_anon_id|vero_id|ref_src|ref_url)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "s",
+              "t",
+              "a",
+              "src",
+              "cn",
+              "refsrc",
+              "ref_src",
+              "ref_url"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "x.com",
+        "twitter.com"
+      ],
+      "regexFilter": "[?&](?:s|t|a|src|cn|refsrc|ref_src|ref_url)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "tag",
+              "ref",
+              "ref_",
+              "pd_rd_r",
+              "pd_rd_w",
+              "pd_rd_wg",
+              "pd_rd_i",
+              "pf_rd_p",
+              "pf_rd_r",
+              "pf_rd_s",
+              "pf_rd_t",
+              "pf_rd_i",
+              "pf_rd_m",
+              "qid",
+              "sr",
+              "crid",
+              "sprefix",
+              "linkCode",
+              "linkId",
+              "content-id",
+              "dib",
+              "dib_tag",
+              "social_share",
+              "creative",
+              "creativeASIN",
+              "camp",
+              "ascsubtag"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "amazon.com",
+        "amazon.co.uk",
+        "amazon.de",
+        "amazon.fr",
+        "amazon.it",
+        "amazon.es",
+        "amazon.ca",
+        "amazon.com.au",
+        "amazon.co.jp",
+        "amazon.in",
+        "amazon.nl",
+        "amazon.com.br",
+        "amazon.com.mx",
+        "amazon.se",
+        "amazon.pl",
+        "amazon.sg",
+        "amazon.ae",
+        "amazon.sa",
+        "amazon.com.tr",
+        "amazon.eg",
+        "amazon.cn"
+      ],
+      "regexFilter": "[?&](?:tag|ref|ref_|pd_rd_r|pd_rd_w|pd_rd_wg|pd_rd_i|pf_rd_p|pf_rd_r|pf_rd_s|pf_rd_t|pf_rd_i|pf_rd_m|qid|sr|crid|sprefix|linkCode|linkId|content-id|dib|dib_tag|social_share|creative|creativeASIN|camp|ascsubtag)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "\\1\\2"
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "amazon.com",
+        "amazon.co.uk",
+        "amazon.de",
+        "amazon.fr",
+        "amazon.it",
+        "amazon.es",
+        "amazon.ca",
+        "amazon.com.au",
+        "amazon.co.jp",
+        "amazon.in",
+        "amazon.nl",
+        "amazon.com.br",
+        "amazon.com.mx",
+        "amazon.se",
+        "amazon.pl",
+        "amazon.sg",
+        "amazon.ae",
+        "amazon.sa",
+        "amazon.com.tr",
+        "amazon.eg",
+        "amazon.cn"
+      ],
+      "regexFilter": "^(https://[^/]+(?:/[^?#]*)?)/ref=[^/?#]*(.*)$"
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "si",
+              "pp",
+              "feature"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "youtube.com",
+        "youtu.be"
+      ],
+      "regexFilter": "[?&](?:si|pp|feature)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "igsh",
+              "igshid"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "instagram.com"
+      ],
+      "regexFilter": "[?&](?:igsh|igshid)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "mibextid",
+              "rdid",
+              "share_url",
+              "refsrc",
+              "__tn__",
+              "__cft__[0]",
+              "fref"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "facebook.com",
+        "fb.com"
+      ],
+      "regexFilter": "[?&](?:mibextid|rdid|share_url|refsrc|__tn__|__cft__\\[0\\]|fref)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 8,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "share_id",
+              "ref",
+              "ref_source",
+              "rdt"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "reddit.com"
+      ],
+      "regexFilter": "[?&](?:share_id|ref|ref_source|rdt)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 9,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "trk",
+              "trackingId",
+              "originalSubdomain",
+              "rcm",
+              "lipi",
+              "midToken",
+              "midSig",
+              "eid",
+              "otpToken",
+              "trkEmail",
+              "refId"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "linkedin.com"
+      ],
+      "regexFilter": "[?&](?:trk|trackingId|originalSubdomain|rcm|lipi|midToken|midSig|eid|otpToken|trkEmail|refId)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 10,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "_t",
+              "_r",
+              "is_from_webapp",
+              "sender_device",
+              "sender_web_id",
+              "is_copy_url",
+              "share_app_id",
+              "share_link_id",
+              "u_code"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "tiktok.com"
+      ],
+      "regexFilter": "[?&](?:_t|_r|is_from_webapp|sender_device|sender_web_id|is_copy_url|share_app_id|share_link_id|u_code)(?:[=&#]|$)"
+    }
+  },
+  {
+    "id": 11,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": [
+              "ved",
+              "ei",
+              "sxsrf",
+              "sca_esv",
+              "uact",
+              "gs_lcrp",
+              "gs_lp",
+              "sclient",
+              "oq",
+              "bih",
+              "biw",
+              "dpr",
+              "iflsig"
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "resourceTypes": [
+        "main_frame"
+      ],
+      "isUrlFilterCaseSensitive": true,
+      "requestDomains": [
+        "google.com"
+      ],
+      "regexFilter": "[?&](?:ved|ei|sxsrf|sca_esv|uact|gs_lcrp|gs_lp|sclient|oq|bih|biw|dpr|iflsig)(?:[=&#]|$)"
+    }
+  }
+]
