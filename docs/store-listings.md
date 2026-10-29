@@ -17,7 +17,7 @@ Strips tracking parameters and share IDs from links, in the address bar and when
 
 ## Long description
 
-Sites like X, Amazon and YouTube quietly add IDs to every link so they can see who shared what, and from which device. Clean Links removes them.
+Sites like X, Amazon and YouTube quietly add IDs to every link which can be used to see who shared what, and from which device. Clean Links removes them.
 
 WHAT IT DOES
 - Cleans the address bar: tracking parameters are removed from the address as soon as the page opens, so they don't end up in your history, bookmarks or the links you share.
@@ -32,7 +32,7 @@ CONTROL
 One switch turns it off. Pause any single site from the toolbar popup if a link ever needs its parameters.
 
 PRIVATE BY DESIGN
-No accounts, no analytics and no network requests. Everything happens on your device. Free and open source (MIT): https://github.com/arrhen/clean-links-safari
+No accounts, no analytics and no network requests of its own. Everything happens on your device. Free and open source (MIT): https://github.com/arrhen/clean-links-safari
 
 LIMITS
 Short links created by a site itself (such as t.co or amzn.to) can't be cleaned, because the tracking ID is stored on their server.
@@ -51,7 +51,7 @@ Short links created by a site itself (such as t.co or amzn.to) can't be cleaned,
 
 ## Firefox (addons.mozilla.org)
 
-- **Summary (250 characters or fewer):** Strips tracking parameters and share IDs from links, in the address bar and when you copy or share. No accounts, no analytics, no network requests.
+- **Summary (250 characters or fewer):** Strips tracking parameters and share IDs from links, in the address bar and when you copy or share. No accounts, no analytics, no network requests of its own.
 - **Categories:** Privacy and Security
 - **License:** MIT
 - **Data collection:** none (declared in the manifest).

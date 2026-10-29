@@ -73,7 +73,13 @@ node test/clean.test.js
 
 ## Privacy
 
-The extension makes no network requests and collects nothing. All processing happens locally.
+The extension makes no network requests of its own and collects nothing. All processing happens locally.
+
+## Good to know
+
+- Clean Links is not affiliated with X, Amazon, YouTube, Apple, Google, Microsoft or Mozilla; those names are used only to say where it works.
+- It removes Amazon's `tag` parameter, which is an affiliate ID, so links you share won't credit anyone's affiliate account.
+- It is provided as is, with no warranty. It can't remove every tracker, and on rare occasions removing a parameter can change how a link behaves; use the toolbar button to pause it for a site.
 
 ## License
 
