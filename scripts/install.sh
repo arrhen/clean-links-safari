@@ -19,10 +19,10 @@ WORK="$ROOT/build"
 APP_NAME="Clean Links"
 LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister
 
-node "$ROOT/scripts/build-rules.js"
+node "$ROOT/scripts/build.js" safari
 rm -rf "$WORK"
 
-xcrun safari-web-extension-converter "$ROOT/extension" \
+xcrun safari-web-extension-converter "$ROOT/dist/safari" \
   --project-location "$WORK" --app-name "$APP_NAME" \
   --bundle-identifier "$BUNDLE_ID" --macos-only --copy-resources \
   --no-open --no-prompt

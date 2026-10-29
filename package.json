@@ -1,0 +1,10 @@
+{
+  "name": "clean-links",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node test/clean.test.js && node test/settings.test.js && node test/build.test.js"
+  }
+}

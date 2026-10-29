@@ -6,6 +6,7 @@ A Safari web extension that strips tracking parameters and share IDs from URLs:
   with a content-script fallback for params added after load.
 - **Share / Copy link buttons:** cleans what goes to the clipboard or the native share sheet.
 - **Links on the page:** cleans hrefs on hover, focus, long-press and right-click.
+- **Control:** a toolbar popup turns cleaning off everywhere, or pauses it for a single site.
 
 Covers `utm_*`, `fbclid`, `gclid`, `msclkid` and friends everywhere, plus site-specific
 parameters for X/Twitter (`s`, `t`, `a`, `ref_src`...), Amazon (`ref=`, `pd_rd_*`, `pf_rd_*`, `tag`...),
@@ -33,6 +34,19 @@ certificate. Requires macOS, Xcode, and Node.js.
 
 Free-account certificates and profiles expire eventually; if the extension stops loading, run the
 script again.
+
+## Other browsers
+
+```sh
+npm run build      # writes dist/ packages for Chrome, Edge, Firefox and Safari
+npm test           # cleaning rules, settings, and build checks
+```
+
+Chrome and Edge: load `dist/chrome` as an unpacked extension (chrome://extensions, Developer mode).
+Firefox: `dist/firefox` (about:debugging, Load Temporary Add-on), or `npx web-ext lint -s dist/firefox`.
+Store listing copy lives in `docs/store-listings.md`.
+
+Forking? Change `FIREFOX_ID` in `scripts/build.js` (Firefox requires a unique add-on ID) and the URLs in `extension/popup.html` and `extension/manifest.json`.
 
 ## Customize
 

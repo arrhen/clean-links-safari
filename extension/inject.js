@@ -4,11 +4,17 @@
   if (!lib) return;
   const { cleanUrl, cleanText } = lib;
 
+  // content.js (extension world) turns cleaning off for paused sites.
+  let enabled = true;
+  addEventListener('__cleanlinks_state', (e) => { enabled = e.detail !== 'off'; });
+  const urlIfOn = (u, base) => (enabled ? cleanUrl(u, base) : u);
+  const textIfOn = (t) => (enabled ? cleanText(t) : t);
+
   // Single-page apps (x.com) re-add params through the History API.
   for (const name of ['pushState', 'replaceState']) {
     const orig = History.prototype[name];
     History.prototype[name] = function (state, title, url) {
-      if (url != null) url = cleanUrl(String(url), location.href);
+      if (url != null) url = urlIfOn(String(url), location.href);
       return orig.call(this, state, title, url);
     };
   }
@@ -17,14 +23,14 @@
   if (globalThis.Clipboard && Clipboard.prototype.writeText) {
     const orig = Clipboard.prototype.writeText;
     Clipboard.prototype.writeText = function (text) {
-      return orig.call(this, cleanText(String(text)));
+      return orig.call(this, textIfOn(String(text)));
     };
   }
   if (globalThis.DataTransfer) {
     const orig = DataTransfer.prototype.setData;
     DataTransfer.prototype.setData = function (type, data) {
       if (type === 'text/plain' || type === 'text/uri-list' || type === 'text') {
-        data = cleanText(String(data));
+        data = textIfOn(String(data));
       }
       return orig.call(this, type, data);
     };
@@ -37,7 +43,7 @@
       ? el.value.slice(el.selectionStart, el.selectionEnd)
       : String(getSelection());
     if (!/^\s*https?:\/\/\S+\s*$/.test(text)) return;
-    const cleaned = cleanText(text);
+    const cleaned = textIfOn(text);
     if (cleaned !== text && e.clipboardData) {
       e.clipboardData.setData('text/plain', cleaned);
       e.preventDefault();
@@ -50,8 +56,8 @@
     Navigator.prototype.share = function (data) {
       if (data) {
         data = Object.assign({}, data);
-        if (data.url) data.url = cleanUrl(String(data.url), location.href);
-        if (data.text) data.text = cleanText(String(data.text));
+        if (data.url) data.url = urlIfOn(String(data.url), location.href);
+        if (data.text) data.text = textIfOn(String(data.text));
       }
       return orig.call(this, data);
     };
