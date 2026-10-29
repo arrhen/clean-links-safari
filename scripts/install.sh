@@ -32,6 +32,24 @@ xcrun safari-web-extension-converter "$ROOT/dist/safari" \
 PBX="$WORK/$APP_NAME/$APP_NAME.xcodeproj/project.pbxproj"
 sed -i '' -E "s/PRODUCT_BUNDLE_IDENTIFIER = \"[^\"]*Clean-Links\"/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID/" "$PBX"
 
+# --- Container app polish: our window, icon and App Store settings.
+APP_DIR="$WORK/$APP_NAME/$APP_NAME"
+VERSION="$(node -p "require('$ROOT/package.json').version")"
+cp "$ROOT/app/ViewController.swift" "$APP_DIR/ViewController.swift"
+cp -R "$ROOT/app/Resources/." "$APP_DIR/Resources/"
+cp "$ROOT/app/AppIcon/"*.png "$APP_DIR/Assets.xcassets/AppIcon.appiconset/"
+# The generator stamps your account name into file headers; neutralize it.
+find "$WORK" -name '*.swift' -exec sed -i '' -E 's#^//  Created by .*#//  Clean Links#' {} +
+# Roomier window than the 425x325 default.
+sed -i '' -E 's#(contentRect" x="[0-9]+" y="[0-9]+" )width="425" height="325"#\1width="520" height="640"#' "$APP_DIR/Base.lproj/Main.storyboard"
+sed -i '' -E -e 's/MACOSX_DEPLOYMENT_TARGET = [0-9.]+;/MACOSX_DEPLOYMENT_TARGET = 15.0;/' \
+  -e "s/MARKETING_VERSION = [0-9.]+;/MARKETING_VERSION = $VERSION;/" \
+  -e "s/CURRENT_PROJECT_VERSION = [0-9]+;/CURRENT_PROJECT_VERSION = ${BUILD_NUMBER:-1};/" \
+  -e 's/INFOPLIST_KEY_NSHumanReadableCopyright = "";/INFOPLIST_KEY_NSHumanReadableCopyright = "MIT licensed. Source on GitHub.";/' "$PBX"
+PLIST="$APP_DIR/Info.plist"
+/usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST"
+/usr/libexec/PlistBuddy -c "Add :LSApplicationCategoryType string public.app-category.utilities" "$PLIST"
+
 DERIVED="$WORK/derived"
 xcodebuild -project "$WORK/$APP_NAME/$APP_NAME.xcodeproj" -scheme "$APP_NAME" \
   -configuration Release -derivedDataPath "$DERIVED" -allowProvisioningUpdates \

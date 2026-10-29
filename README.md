@@ -35,6 +35,9 @@ certificate. Requires macOS, Xcode, and Node.js.
 Free-account certificates and profiles expire eventually; if the extension stops loading, run the
 script again.
 
+The Mac app (`app/`) is the container Safari requires: a window showing whether the extension is on, with
+steps to enable it. `install.sh` overlays it onto the generated Xcode project, so nothing generated is committed.
+
 ## Other browsers
 
 ```sh
