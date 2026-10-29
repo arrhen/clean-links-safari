@@ -24,4 +24,11 @@ const ff = JSON.parse(fs.readFileSync('dist/firefox/manifest.json', 'utf8'));
 assert.strictEqual(ff.browser_specific_settings.gecko.id, 'clean-links@arrhen.me');
 assert.ok(!ff.background.service_worker);
 assert.ok(fs.existsSync('dist/clean-links-chrome-1.0.0.zip'));
+// Rules must use plain urlFilter patterns (Safari drops regex rules with alternation).
+const rules = JSON.parse(fs.readFileSync('extension/rules.json', 'utf8'));
+assert.ok(rules.length > 50, 'expected many per-parameter rules');
+for (const r of rules) {
+  assert.ok(!r.condition.regexFilter, 'no regexFilter rules');
+  assert.ok(r.condition.urlFilter && r.action.redirect.transform.queryTransform.removeParams.length);
+}
 console.log('build checks passed for', Object.keys(PATCHES).join(', '));

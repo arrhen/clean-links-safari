@@ -2,7 +2,7 @@
 
 A Safari web extension that strips tracking parameters and share IDs from URLs:
 
-- **Address bar:** removes parameters before the request is sent (declarativeNetRequest),
+- **Address bar:** removes parameters from the address as soon as the page opens, and, in browsers that apply redirect rules to the navigation (declarativeNetRequest), before the request is sent,
   with a content-script fallback for params added after load.
 - **Share / Copy link buttons:** cleans what goes to the clipboard or the native share sheet.
 - **Links on the page:** cleans hrefs on hover, focus, long-press and right-click.

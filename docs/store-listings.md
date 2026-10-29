@@ -20,7 +20,7 @@ Strips tracking parameters and share IDs from links, in the address bar and when
 Sites like X, Amazon and YouTube quietly add IDs to every link so they can see who shared what, and from which device. Clean Links removes them.
 
 WHAT IT DOES
-- Cleans the address bar: tracking parameters are removed before the request is sent, so the site never receives them.
+- Cleans the address bar: tracking parameters are removed from the address as soon as the page opens, so they don't end up in your history, bookmarks or the links you share.
 - Cleans Copy link and Share buttons: you get a tidy URL, ready to paste to a friend.
 - Cleans links on the page when you hover or right-click them.
 - Leaves useful parts alone: search terms, video timestamps and product variants are kept so links still work.
@@ -42,7 +42,7 @@ Short links created by a site itself (such as t.co or amzn.to) can't be cleaned,
 - **Category:** Productivity (Chrome), Productivity or Privacy tools (Edge)
 - **Single purpose:** Removes tracking parameters from web addresses and shared links.
 - **Permission justifications**
-  - `declarativeNetRequest` and access to all websites: to remove tracking parameters from the address of any page before the request is sent. Tracking parameters can appear on any site.
+  - `declarativeNetRequest` and access to all websites: to rewrite the address of any page to remove tracking parameters (where the browser supports it, before the request is sent). Tracking parameters can appear on any site.
   - `storage`: to save the user's on/off switch and the list of sites they paused, locally in the browser.
   - Content scripts on all pages: to clean links when the user presses Copy link or Share, and to tidy the address bar if a page adds tracking after it loads.
 - **Remote code:** No. All code is packaged in the extension.
