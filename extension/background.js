@@ -17,3 +17,16 @@ ext.runtime.onStartup.addListener(applySettings);
 ext.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && KEYS.some((k) => k in changes)) applySettings();
 });
+
+// Fallback for Chrome/Edge, where the manifest's MAIN-world script was not
+// observed to run: inject the page-world hooks on request from content.js.
+ext.runtime.onMessage.addListener((msg, sender, reply) => {
+  if (!msg || msg.type !== 'inject-main' || !sender.tab || !ext.scripting) return;
+  ext.scripting.executeScript({
+    target: { tabId: sender.tab.id, frameIds: [sender.frameId || 0] },
+    world: 'MAIN',
+    injectImmediately: true,
+    files: ['clean.js', 'inject.js'],
+  }).then(() => reply(true), () => reply(false));
+  return true;
+});

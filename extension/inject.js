@@ -2,6 +2,10 @@
   const lib = globalThis.__cleanLinks;
   delete globalThis.__cleanLinks;
   if (!lib) return;
+  // Chrome/Edge may run this twice (manifest + background injection).
+  const MARK = Symbol.for('cleanlinks.hooked');
+  if (globalThis[MARK]) return;
+  Object.defineProperty(globalThis, MARK, { value: true });
   const { cleanUrl, cleanText } = lib;
 
   // content.js (extension world) turns cleaning off for paused sites.

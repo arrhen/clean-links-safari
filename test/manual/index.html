@@ -13,7 +13,11 @@ const dirty = ['utm_source','fbclid','gclid'].filter(k => u.searchParams.has(k))
 document.getElementById('addr').innerHTML = dirty.length
   ? '<span class="bad">Tracking parameters still present: ' + dirty.join(', ') + '</span>'
   : '<span class="ok">No tracking parameters left.</span>';
-const src = (navigator.clipboard && navigator.clipboard.writeText) ? Function.prototype.toString.call(navigator.clipboard.writeText) : '';
-document.getElementById('hooks').innerHTML = /textIfOn/.test(src)
-  ? '<span class="ok">ACTIVE</span>' : '<span class="bad">NOT ACTIVE</span>';
+const checkHooks = () => {
+  const src = (navigator.clipboard && navigator.clipboard.writeText) ? Function.prototype.toString.call(navigator.clipboard.writeText) : '';
+  document.getElementById('hooks').innerHTML = /textIfOn/.test(src)
+    ? '<span class="ok">ACTIVE</span>' : '<span class="bad">NOT ACTIVE</span>';
+};
+checkHooks();
+setTimeout(checkHooks, 1500);
 </script></body></html>

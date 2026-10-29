@@ -23,6 +23,10 @@
   };
   const refresh = () => ext.storage.local.get(KEYS).then(apply, () => fixLocation());
   refresh();
+  // Ask the background to inject the page-world hooks if the manifest did not.
+  try {
+    Promise.resolve(ext.runtime.sendMessage({ type: 'inject-main' })).then(publish, () => {});
+  } catch (e) { /* background unavailable */ }
   ext.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && KEYS.some((k) => k in changes)) refresh();
   });

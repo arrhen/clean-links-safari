@@ -10,10 +10,12 @@ const SRC = path.join(ROOT, 'extension');
 const DIST = path.join(ROOT, 'dist');
 const FIREFOX_ID = 'clean-links@arrhen.me';
 
-// Chrome and Edge use the manifest as written (service-worker background).
+// Chrome and Edge: service-worker background, plus the scripting permission
+// used to inject the page-world hooks (see background.js).
+const withScripting = (m) => Object.assign(m, { permissions: [...m.permissions, 'scripting'] });
 const PATCHES = {
-  chrome: (m) => m,
-  edge: (m) => m,
+  chrome: withScripting,
+  edge: withScripting,
   firefox: (m) => Object.assign(m, {
     background: { scripts: ['settings.js', 'background.js'] },
     browser_specific_settings: {

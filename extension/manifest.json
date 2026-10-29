@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Clean Links",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Strips tracking parameters and share IDs from links, in the address bar and when you copy or share.",
   "homepage_url": "https://arrhen.me/clean-links/",
   "icons": { "16": "icon-16.png", "32": "icon-32.png", "48": "icon-48.png", "96": "icon-96.png", "128": "icon-128.png" },

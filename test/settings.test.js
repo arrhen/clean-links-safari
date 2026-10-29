@@ -44,7 +44,7 @@ const fs = require('fs');
         rules = rules.filter((r) => !removeRuleIds.includes(r.id)).concat(addRules);
       },
     },
-    runtime: { onInstalled: { addListener: (f) => { listeners.installed = f; } }, onStartup: { addListener: () => {} } },
+    runtime: { onInstalled: { addListener: (f) => { listeners.installed = f; } }, onStartup: { addListener: () => {} }, onMessage: { addListener: () => {} } },
   };
   vm.runInNewContext(fs.readFileSync(__dirname + '/../extension/background.js', 'utf8'),
     { chrome: ext, __cleanSettings: require('../extension/settings.js'), console });
