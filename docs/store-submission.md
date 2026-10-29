@@ -1,6 +1,6 @@
 # Store submission cheat sheet
 
-Files: `dist/clean-links-{chrome,edge,firefox}-1.0.2.zip` (also on the v1.0.2 GitHub release), `dist/clean-links-source-1.0.2.zip` (Firefox source), screenshots and promo tile in `assets/screenshots/`. Listing text: `store-listings.md`.
+Files: `dist/clean-links-{chrome,edge,firefox}-1.0.3.zip` (also on the v1.0.3 GitHub release), `dist/clean-links-source-1.0.3.zip` (Firefox source), screenshots and promo tile in `assets/screenshots/`. Listing text: `store-listings.md`.
 
 ## Permission justifications (paste as asked)
 
