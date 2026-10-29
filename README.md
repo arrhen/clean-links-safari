@@ -1,6 +1,6 @@
-# Clean Links for Safari
+# Clean Links
 
-A Safari web extension that strips tracking parameters and share IDs from URLs:
+A browser extension (Safari, Chrome, Edge, Brave, Firefox) that strips tracking parameters and share IDs from URLs:
 
 - **Address bar:** removes parameters from the address as soon as the page opens, and, in browsers that apply redirect rules to the navigation (declarativeNetRequest), before the request is sent,
   with a content-script fallback for params added after load.
@@ -16,6 +16,17 @@ what you see (search terms, YouTube `t=` timestamps, Amazon `th=` variants) are 
 Not covered: server-side short links (`t.co`, `amzn.to`) — the ID lives on their server.
 
 ## Install
+
+### Chrome, Edge, Brave, Firefox
+
+Download the zip for your browser from the [latest release](https://github.com/arrhen/clean-links-safari/releases/latest), or build them yourself with `npm run build` (output in `dist/`).
+
+- **Chrome / Edge / Brave:** unzip, open `chrome://extensions` (or `edge://extensions`), turn on Developer mode, choose **Load unpacked** and pick the folder.
+- **Firefox:** open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and pick the zip. Firefox removes it when it closes until the add-on is signed through Mozilla.
+
+Store listings are on the way.
+
+### Safari (Mac)
 
 Safari only runs extensions inside a signed Mac app, so you build it yourself with your own
 certificate. Requires macOS, Xcode, and Node.js.
