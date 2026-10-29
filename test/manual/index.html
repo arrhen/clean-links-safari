@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clean Links manual test</title>
+<style>body{font:16px/1.5 -apple-system,sans-serif;margin:20px}code{word-break:break-all;background:#eee;padding:2px 4px;border-radius:4px}.ok{color:#15803d}.bad{color:#b91c1c}h1{font-size:20px}</style></head><body>
+<h1>Clean Links manual test</h1>
+<p>Open this page with tracking parameters, e.g. <code>?id=7&amp;utm_source=news&amp;fbclid=abc</code>.</p>
+<p><b>Address:</b> <code id="href"></code></p>
+<p id="addr"></p>
+<p><b>Page-world hooks (needed for Copy link and Share):</b> <span id="hooks"></span></p>
+<script>
+const u = new URL(location.href);
+document.getElementById('href').textContent = location.href;
+const dirty = ['utm_source','fbclid','gclid'].filter(k => u.searchParams.has(k));
+document.getElementById('addr').innerHTML = dirty.length
+  ? '<span class="bad">Tracking parameters still present: ' + dirty.join(', ') + '</span>'
+  : '<span class="ok">No tracking parameters left.</span>';
+const src = (navigator.clipboard && navigator.clipboard.writeText) ? Function.prototype.toString.call(navigator.clipboard.writeText) : '';
+document.getElementById('hooks').innerHTML = /textIfOn/.test(src)
+  ? '<span class="ok">ACTIVE</span>' : '<span class="bad">NOT ACTIVE</span>';
+</script></body></html>

@@ -38,6 +38,17 @@ script again.
 The Mac app (`app/`) is the container Safari requires: a window showing whether the extension is on, with
 steps to enable it. `install.sh` overlays it onto the generated Xcode project, so nothing generated is committed.
 
+## iPhone and iPad
+
+```sh
+BUNDLE_ID=com.yourname.cleanlinks ./scripts/ios.sh simulator   # build, install and launch on a booted simulator
+BUNDLE_ID=com.yourname.cleanlinks ./scripts/ios.sh project     # open the Xcode project to sign and archive
+```
+
+Needs Xcode with the iOS SDK. After installing, enable the extension in Safari (aA menu, then Manage Extensions).
+`test/manual/index.html` is a page that shows whether tracking parameters were removed and whether the
+Copy link and Share hooks loaded; serve it with `python3 -m http.server -d test/manual 8777`.
+
 ## Other browsers
 
 ```sh

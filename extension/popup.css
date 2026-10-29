@@ -20,3 +20,12 @@ footer a:hover{color:var(--fg)}
 .switch input:checked+span{background:var(--accent)}
 .switch input:checked+span::after{transform:translateX(18px)}
 .switch input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+/* iPhone and iPad: full-width sheet, native-size switches, larger text and tap targets. */
+@supports (-webkit-touch-callout: none) {
+  body{width:100%;min-width:300px;font-size:16px}
+  .switch{width:51px;height:31px}
+  .switch span::after{top:2px;left:2px;width:27px;height:27px}
+  .switch input:checked+span::after{transform:translateX(20px)}
+  p{font-size:14px}
+  footer a{font-size:14px;padding:8px 0}
+}
