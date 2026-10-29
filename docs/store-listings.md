@@ -44,6 +44,7 @@ Short links created by a site itself (such as t.co or amzn.to) can't be cleaned,
 - **Single purpose:** Removes tracking parameters from web addresses and shared links.
 - **Permission justifications**
   - `declarativeNetRequest` and access to all websites: to rewrite the address of any page to remove tracking parameters (where the browser supports it, before the request is sent). Tracking parameters can appear on any site.
+  - `scripting` (Chrome and Edge only): to load the extension's own packaged page script (the Copy link and Share hooks) into pages when the browser does not load it by itself. It injects only files packaged in the extension, never remote code.
   - `storage`: to save the user's on/off switch and the list of sites they paused, locally in the browser.
   - Content scripts on all pages: to clean links when the user presses Copy link or Share, and to tidy the address bar if a page adds tracking after it loads.
 - **Remote code:** No. All code is packaged in the extension.
