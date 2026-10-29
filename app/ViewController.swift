@@ -37,8 +37,25 @@ class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHan
                 value = "unknown"
             }
             DispatchQueue.main.async {
-                self?.webView.evaluateJavaScript("show('\(value)')")
+                self?.webView.evaluateJavaScript("show('\(value)')") { _, _ in self?.fitWindow() }
             }
+        }
+    }
+
+    // Size the window to its content; if that is taller than the screen,
+    // the page scrolls instead.
+    func fitWindow() {
+        guard let window = view.window else { return }
+        webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak window] result, _ in
+            guard let window = window, let height = (result as? NSNumber)?.doubleValue else { return }
+            let screenHeight = (window.screen ?? NSScreen.main)?.visibleFrame.height ?? 800
+            let titleBar = window.frame.height - window.contentLayoutRect.height
+            let target = min(max(height, 360), screenHeight - titleBar - 40)
+            var frame = window.frame
+            let newHeight = target + titleBar
+            frame.origin.y += frame.height - newHeight
+            frame.size = NSSize(width: max(frame.width, 480), height: newHeight)
+            window.setFrame(frame, display: true, animate: false)
         }
     }
 
