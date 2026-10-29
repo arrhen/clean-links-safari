@@ -5,6 +5,7 @@ Copy-paste text for each store. URLs:
 - Home / marketing: https://arrhen.me/clean-links/
 - Privacy policy: https://arrhen.me/clean-links/privacy
 - Support: https://arrhen.me/clean-links/support
+- Contact email (privacy and support): privacy@arrhen.me
 - Source: https://github.com/arrhen/clean-links-safari
 
 Images are in `assets/screenshots/` (1280x800 for Chrome, Edge and Firefox; 2560x1600 for the Mac App Store) and the 440x280 promo tile.
