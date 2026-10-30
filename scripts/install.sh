@@ -29,8 +29,9 @@ xcrun safari-web-extension-converter "$ROOT/dist/safari" \
 
 # The converter derives the container app's id from your account name; make it
 # a prefix of the extension's id, which Xcode requires.
-PBX="$WORK/$APP_NAME/$APP_NAME.xcodeproj/project.pbxproj"
-sed -i '' -E "s/PRODUCT_BUNDLE_IDENTIFIER = \"[^\"]*Clean-Links\"/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID/" "$PBX"
+. "$ROOT/scripts/xcproj.sh"
+xc_init "$WORK/$APP_NAME/$APP_NAME.xcodeproj"
+xc_fix_bundle_id "$BUNDLE_ID"
 
 # --- Container app polish: our window, icon and App Store settings.
 APP_DIR="$WORK/$APP_NAME/$APP_NAME"
@@ -42,15 +43,41 @@ cp "$ROOT/app/AppIcon/"*.png "$APP_DIR/Assets.xcassets/AppIcon.appiconset/"
 find "$WORK" -name '*.swift' -exec sed -i '' -E 's#^//  Created by .*#//  Clean Links#' {} +
 # Roomier window than the 425x325 default.
 sed -i '' -E 's#(contentRect" x="[0-9]+" y="[0-9]+" )width="425" height="325"#\1width="520" height="640"#' "$APP_DIR/Base.lproj/Main.storyboard"
-sed -i '' -E -e 's/MACOSX_DEPLOYMENT_TARGET = [0-9.]+;/MACOSX_DEPLOYMENT_TARGET = 15.0;/' \
-  -e "s/MARKETING_VERSION = [0-9.]+;/MARKETING_VERSION = $VERSION;/" \
-  -e "s/CURRENT_PROJECT_VERSION = [0-9]+;/CURRENT_PROJECT_VERSION = ${BUILD_NUMBER:-1};/" \
-  -e 's/INFOPLIST_KEY_NSHumanReadableCopyright = "";/INFOPLIST_KEY_NSHumanReadableCopyright = "MIT licensed. Source on GitHub.";/' "$PBX"
+xc_set MACOSX_DEPLOYMENT_TARGET 15.0
+xc_set MARKETING_VERSION "$VERSION"
+xc_set CURRENT_PROJECT_VERSION "${BUILD_NUMBER:-1}"
+xc_set INFOPLIST_KEY_NSHumanReadableCopyright "MIT licensed. Source on GitHub."
 PLIST="$APP_DIR/Info.plist"
 /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST"
 /usr/libexec/PlistBuddy -c "Add :LSApplicationCategoryType string public.app-category.utilities" "$PLIST"
 
 DERIVED="$WORK/derived"
+PROJ="$WORK/$APP_NAME/$APP_NAME.xcodeproj"
+
+# ARCHIVE=1: build an App Store archive and export it (signed with your Apple
+# Distribution certificate) to dist/appstore/, instead of installing locally.
+if [ "${ARCHIVE:-}" = "1" ]; then
+  OUT="$ROOT/dist/appstore"
+  rm -rf "$OUT"; mkdir -p "$OUT"
+  xcodebuild -project "$PROJ" -scheme "$APP_NAME" -configuration Release \
+    -archivePath "$OUT/$APP_NAME.xcarchive" -allowProvisioningUpdates \
+    DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic archive
+  cat > "$OUT/ExportOptions.plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>method</key><string>app-store-connect</string>
+<key>teamID</key><string>$TEAM_ID</string>
+<key>signingStyle</key><string>automatic</string>
+</dict></plist>
+PLIST
+  xcodebuild -exportArchive -archivePath "$OUT/$APP_NAME.xcarchive" \
+    -exportOptionsPlist "$OUT/ExportOptions.plist" -exportPath "$OUT/export" -allowProvisioningUpdates
+  rm -rf "$WORK"
+  echo "Archive and export are in $OUT"
+  exit 0
+fi
+
 xcodebuild -project "$WORK/$APP_NAME/$APP_NAME.xcodeproj" -scheme "$APP_NAME" \
   -configuration Release -derivedDataPath "$DERIVED" -allowProvisioningUpdates \
   DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic \

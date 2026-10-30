@@ -30,21 +30,22 @@ xcrun safari-web-extension-converter "$ROOT/dist/safari" \
   --no-open --no-prompt
 
 PROJ="$WORK/$APP_NAME/$APP_NAME.xcodeproj"
-PBX="$PROJ/project.pbxproj"
+. "$ROOT/scripts/xcproj.sh"
+xc_init "$PROJ"
 APP_DIR="$WORK/$APP_NAME/$APP_NAME"
 
 # The converter derives the container app's id from your account name; make it
 # a prefix of the extension's id, which Xcode requires.
-sed -i '' -E "s/PRODUCT_BUNDLE_IDENTIFIER = \"[^\"]*Clean-Links\"/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID/" "$PBX"
+xc_fix_bundle_id "$BUNDLE_ID"
 
 # Our screen, icon and App Store settings.
 cp "$ROOT/app-ios/ViewController.swift" "$APP_DIR/ViewController.swift"
 cp -R "$ROOT/app-ios/Resources/." "$APP_DIR/Resources/"
 cp "$ROOT/app-ios/AppIcon/"*.png "$APP_DIR/Assets.xcassets/AppIcon.appiconset/"
 find "$WORK" -name '*.swift' -exec sed -i '' -E 's#^//  Created by .*#//  Clean Links#' {} +
-sed -i '' -E -e 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]+;/IPHONEOS_DEPLOYMENT_TARGET = 18.0;/' \
-  -e "s/MARKETING_VERSION = [0-9.]+;/MARKETING_VERSION = $VERSION;/" \
-  -e "s/CURRENT_PROJECT_VERSION = [0-9]+;/CURRENT_PROJECT_VERSION = ${BUILD_NUMBER:-1};/" "$PBX"
+xc_set IPHONEOS_DEPLOYMENT_TARGET 18.0
+xc_set MARKETING_VERSION "$VERSION"
+xc_set CURRENT_PROJECT_VERSION "${BUILD_NUMBER:-1}"
 /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$APP_DIR/Info.plist"
 
 case "$MODE" in
@@ -62,5 +63,26 @@ case "$MODE" in
     open "$PROJ"
     echo "Opened. Pick your team for both targets, then Product > Archive."
     ;;
-  *) echo "Unknown mode: $MODE (use simulator or project)" >&2; exit 1 ;;
+  archive)
+    : "${TEAM_ID:?Set TEAM_ID to your Apple Developer Team ID}"
+    OUT="$ROOT/dist/appstore-ios"
+    rm -rf "$OUT"; mkdir -p "$OUT"
+    xcodebuild -project "$PROJ" -scheme "$APP_NAME" -configuration Release \
+      -destination 'generic/platform=iOS' -archivePath "$OUT/$APP_NAME.xcarchive" \
+      -allowProvisioningUpdates DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic \
+      CODE_SIGNING_ALLOWED=NO archive
+    cat > "$OUT/ExportOptions.plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>method</key><string>app-store-connect</string>
+<key>teamID</key><string>$TEAM_ID</string>
+<key>signingStyle</key><string>automatic</string>
+</dict></plist>
+PLIST
+    xcodebuild -exportArchive -archivePath "$OUT/$APP_NAME.xcarchive" \
+      -exportOptionsPlist "$OUT/ExportOptions.plist" -exportPath "$OUT/export" -allowProvisioningUpdates
+    echo "Archive and export are in $OUT"
+    ;;
+  *) echo "Unknown mode: $MODE (use simulator, project or archive)" >&2; exit 1 ;;
 esac
